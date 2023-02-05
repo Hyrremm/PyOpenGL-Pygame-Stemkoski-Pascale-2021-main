@@ -2,6 +2,7 @@ import numpy as np
 import math
 
 
+
 class Matrix:
     """
     Contains static methods to generate matrices (with the numpy library) corresponding

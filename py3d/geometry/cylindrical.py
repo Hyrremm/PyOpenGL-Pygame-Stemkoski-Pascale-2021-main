@@ -28,6 +28,7 @@ class CylindricalGeometry(ParametricGeometry):
                          v_end=1,
                          v_resolution=height_segments,
                          surface_function=surface_function)
+        self._physical = True
 
         if closed_top:
             top_geometry = PolygonGeometry(

@@ -28,7 +28,7 @@ from py3d.geometry.sphere import SphereGeometry
 from py3d.geometry.box import BoxGeometry
 from py3d.extras.movement_rig import MovementRig
 from py3d.extras.directional_light import DirectionalLightHelper
-
+from py3d.physics.Collision import Collision
 
 class Example(Base):
     """
@@ -68,12 +68,13 @@ class Example(Base):
         )
 
         sphere1 = Mesh(sphere_geometry, phong_material)
-        sphere1.set_position([-2, 1, 0])
+        sphere1.set_position([-20, 1, 0])
         self.scene.add(sphere1)
 
         box1 = Mesh(rectangle_geometry, phong_material)
         box1.set_position([1, 2.2, -0.5])
         self.scene.add(box1)
+
 
 
         self.renderer.enable_shadows(self.directional_light)
@@ -93,10 +94,11 @@ class Example(Base):
 
     def update(self):
         #"""
+
         # view dynamic shadows -- need to increase shadow camera range
         self.directional_light.rotate_y(0.0337, False)
         #"""
-        self.rig.update( self._input, self.delta_time)
+        self.rig.update( self._input, self.delta_time,self.camera,self.scene.descendant_list)
         self.renderer.render(self.scene, self.camera)
         """
         # render scene from shadow camera
@@ -123,7 +125,6 @@ class Example(Base):
                 obj = Mesh(geometry, phong_material)
 
                 list = self.camera.global_position
-                print(self.camera.view_matrix)
                 list[0]-=3*self.camera.view_matrix[2,0]
                 list[2]-=3*self.camera.view_matrix[2,2]
                 list[1]-=3*self.camera.view_matrix[2,1]
@@ -135,4 +136,4 @@ class Example(Base):
 
 
 
-Example(screen_size=[1366, 768],fullscreen=False).run(dev_mode=True)
+Example(screen_size=[1366, 768],fullscreen=True).run(dev_mode=True)

@@ -3,6 +3,8 @@ from py3d.geometry.geometry import Geometry
 from py3d.material.line import LineMaterial
 
 
+
+
 class GridHelper(Mesh):
     def __init__(self, size=10, divisions=10, grid_color=(0, 0, 0), center_color=(0.5, 0.5, 0.5), line_width=1):
         geometry = Geometry()

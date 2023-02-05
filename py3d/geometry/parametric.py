@@ -13,6 +13,7 @@ class ParametricGeometry(Geometry):
                  v_start, v_end, v_resolution,
                  surface_function):
         super().__init__()
+        self._physical = True
         # Generate set of points on function
         delta_u = (u_end - u_start) / u_resolution
         delta_v = (v_end - v_start) / v_resolution
@@ -44,7 +45,7 @@ class ParametricGeometry(Geometry):
             texture_position_list.append(uv_list)
 
         # Store vertex data
-        position_data = []
+        self.position_data = []
         color_data = []
         uv_data = []
         # default vertex colors
@@ -55,7 +56,7 @@ class ParametricGeometry(Geometry):
 
         # Group vertex data into triangles.
         # Note: .copy() is necessary to avoid storing references.
-        # position_data will be also copied in apply_matrix() in the Geometry class.
+        # self.position_data will be also copied in apply_matrix() in the Geometry class.
         for i_index in range(u_resolution):
             for j_index in range(v_resolution):
                 # position data
@@ -63,7 +64,7 @@ class ParametricGeometry(Geometry):
                 p_b = position_list[i_index + 1][j_index + 0]
                 p_c = position_list[i_index + 1][j_index + 1]
                 p_d = position_list[i_index + 0][j_index + 1]
-                position_data += [p_a.copy(), p_b.copy(), p_c.copy(),
+                self.position_data += [p_a.copy(), p_b.copy(), p_c.copy(),
                                   p_a.copy(), p_c.copy(), p_d.copy()]
                 # color data
                 color_data += [c1, c2, c3,
@@ -88,7 +89,7 @@ class ParametricGeometry(Geometry):
                 face_normal_data += [fn0.copy(), fn0.copy(), fn0.copy(),
                                      fn1.copy(), fn1.copy(), fn1.copy()]
 
-        self.add_attribute("vec3", "vertexPosition", position_data)
+        self.add_attribute("vec3", "vertexPosition", self.position_data)
         self.add_attribute("vec3", "vertexColor", color_data)
         self.add_attribute("vec2", "vertexUV", uv_data)
         self.add_attribute("vec3", "vertexNormal", vertex_normal_data)

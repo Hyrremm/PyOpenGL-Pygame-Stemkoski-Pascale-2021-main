@@ -9,6 +9,7 @@ class Object3D:
         self._matrix = Matrix.make_identity()
         self._parent = None
         self._children_list = []
+        self._physical = False
 
     @property
     def children_list(self):

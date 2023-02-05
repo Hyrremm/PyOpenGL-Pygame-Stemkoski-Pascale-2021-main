@@ -1,5 +1,5 @@
 import math
-
+from py3d.physics.Collision import Collision
 from py3d.core_ext.object3d import Object3D
 
 
@@ -44,22 +44,40 @@ class MovementRig(Object3D):
     def remove(self, child):
         self._look_attachment.remove(child)
 
-    def update(self, input_object, delta_time):
+    def update(self, input_object, delta_time,camera,list):
         move_amount = self._units_per_second * delta_time
         rotate_amount = self._degrees_per_second * (math.pi / 180) * delta_time
         rotate_amount_mouse = 10
         if input_object.is_key_pressed(self.KEY_MOVE_FORWARDS):
             self.translate(0, 0, -move_amount)
+            if(Collision().check(camera,list)):
+                self.translate(0, 0, move_amount)
+
         if input_object.is_key_pressed(self.KEY_MOVE_BACKWARDS):
             self.translate(0, 0, move_amount)
+            if(Collision().check(camera,list)):
+                self.translate(0, 0, -move_amount)
+
         if input_object.is_key_pressed(self.KEY_MOVE_LEFT):
             self.translate(-move_amount, 0, 0)
+            if(Collision().check(camera,list)):
+                self.translate(move_amount, 0, 0)
+
         if input_object.is_key_pressed(self.KEY_MOVE_RIGHT):
             self.translate(move_amount, 0, 0)
+            if(Collision().check(camera,list)):
+                self.translate(-move_amount, 0, 0)
+
         if input_object.is_key_pressed(self.KEY_MOVE_UP):
             self.translate(0, move_amount, 0)
+            if(Collision().check(camera,list)):
+                self.translate(0, -move_amount, 0)
+
         if input_object.is_key_pressed(self.KEY_MOVE_DOWN):
             self.translate(0, -move_amount, 0)
+            if(Collision().check(camera,list)):
+                self.translate(0, move_amount, 0)
+
         if input_object.is_key_pressed(self.KEY_TURN_RIGHT):
             self.rotate_y(-rotate_amount)
         if input_object.is_key_pressed(self.KEY_TURN_LEFT):
@@ -74,8 +92,12 @@ class MovementRig(Object3D):
             input_object._mouse_move=(0,0)
         if input_object.is_key_pressed(self.KEY_SPACE):
             self.translate(0, move_amount, 0)
+            if(Collision().check(camera,list)):
+                self.translate(0, -move_amount, 0)
         if input_object.is_key_pressed(self.KEY_SHIFT):
             self.translate(0, -move_amount, 0)
+            if(Collision().check(camera,list)):
+                self.translate(0, move_amount, 0)
 
 
 
