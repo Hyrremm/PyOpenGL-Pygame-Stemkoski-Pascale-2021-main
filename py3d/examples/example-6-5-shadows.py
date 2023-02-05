@@ -82,7 +82,8 @@ class Example(Base):
         # optional: render depth texture to mesh in scene
         depth_texture = self.renderer.shadow_object.render_target.texture
         shadow_display = Mesh(RectangleGeometry(), TextureMaterial(depth_texture))
-        shadow_display.set_position([-1, 3, 0])
+        shad\
+        _display.set_position([-1, 3, 0])
         self.scene.add(shadow_display)
         """
 
